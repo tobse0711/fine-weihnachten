@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Frohe Weihnachten Finia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Orbitron:wght@400;700&family=Raleway:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --starlight-blue: #0a0e29;
+            --starlight-purple: #240b36;
+            --neon-blue: #00f2ff;
+            --gold: #ffd700;
+            --snow: #ffffff;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            background: linear-gradient(to bottom, var(--starlight-blue), var(--starlight-purple));
+            font-family: 'Raleway', sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* --- Hintergrund Sterne & Schnee --- */
+        .stars, .snow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: twinkle infinite alternate;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+
+        /* --- Hauptcontainer --- */
+        .container {
+            z-index: 10;
+            text-align: center;
+            position: relative;
+            padding: 20px;
+            perspective: 1000px;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeIn 2s ease-in forwards 0.5s;
+            line-height: 1.2;
+        }
+
+        /* --- Der "Button" (Geschenk) --- */
+        .gift-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--gold);
+            padding: 20px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+            animation: fadeIn 2s ease-in forwards 1.5s;
+            opacity: 0; 
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .gift-box:hover {
+            background: var(--gold);
+            color: var(--starlight-purple);
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+        }
+
+        /* --- Das Ticket --- */
+        .ticket-wrapper {
+            display: none;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .ticket {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 2px solid var(--neon-blue);
+            width: 90%;
+            max-width: 650px;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 242, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            color: white;
+            margin: 0 auto;
+        }
+
+        .ticket::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 5px;
+            background: linear-gradient(90deg, var(--neon-blue), #ff00de, var(--neon-blue));
+        }
+
+        .ticket-header {
+            padding: 20px 25px;
+            border-bottom: 1px dashed rgba(255,255,255,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .starlight-logo {
+            max-height: 70px;
+            width: auto;
+            display: block;
+            filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
+        }
+        
+        .christmas-text {
+            font-family: 'Great Vibes';
+            font-size: 1.8rem;
+            color: var(--gold);
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+            white-space: nowrap;
+        }
+
+        .ticket-body {
+            padding: 35px;
+            text-align: left;
+        }
+
+        .route {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            color: var(--gold);
+            flex-wrap: wrap; 
+            gap: 10px;
+        }
+
+        .arrow {
+            color: var(--neon-blue);
+            font-size: 1.5rem;
+        }
+
+        .details {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .details p {
+             margin-bottom: 1.5em;
+        }
+
+        .details strong {
+            color: var(--neon-blue);
+            font-weight: 600;
+        }
+
+        .ticket-footer {
+            background: rgba(0, 242, 255, 0.15);
+            padding: 15px;
+            text-align: center;
+            font-size: 1rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .love-note {
+             margin-top: 25px;
+             font-size: 1.2rem;
+             opacity: 0;
+        }
+
+        /* --- Animationen --- */
+        @keyframes twinkle {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0.3; }
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        .zoomInAnim {
+             animation: zoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.5) rotateX(20deg); }
+            to { opacity: 1; transform: scale(1) rotateX(0); }
+        }
+
+        /* --- Mobile Optimierung --- */
+        @media (max-width: 768px) {
+            h1 { 
+                font-size: 3rem; 
+                margin-bottom: 20px;
+            }
+            .gift-box {
+                padding: 15px 30px;
+                font-size: 1.3rem;
+            }
+            .ticket { 
+                width: 95%; 
+            }
+            .ticket-header { 
+                flex-direction: column; 
+                gap: 10px; 
+                text-align: center;
+                padding: 20px;
+            }
+            .starlight-logo {
+                max-height: 55px; 
+                margin: 0 auto;
+            }
+            .christmas-text {
+                font-size: 1.5rem;
+            }
+            .route { 
+                font-size: 1rem; 
+                justify-content: center;
+            }
+            .ticket-body {
+                padding: 25px 20px;
+            }
+            .details {
+                font-size: 1rem;
+            }
+            .ticket-footer {
+                font-size: 0.8rem;
+                letter-spacing: 1px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars" id="starContainer"></div>
+    <div class="snow" id="snowContainer"></div>
+
+    <div class="container">
+        <h1 id="mainTitle">Frohe Weihnachten, Finia!</h1>
+        
+        <div class="gift-box" id="openBtn">
+            🎁 Dein Geschenk öffnen
+        </div>
+
+        <div class="ticket-wrapper" id="ticketWrapper">
+            <div class="ticket">
+                <div class="ticket-header">
+                    <img src="https://images.ctfassets.net/lh2s9pwlen52/FAAtU8U5qi2oCZ7HHUVyw/97d0fac1d02dfd682e6bacc7ea4d0089/starlight-express-logo-stageM-1150x506px-2025.png" alt="Starlight Express Logo" class="starlight-logo">
+                    
+                    <span class="christmas-text">Frohe Weihnachten!</span>
+                </div>
+                <div class="ticket-body">
+                    <div class="route">
+                        <span>STUTTGART</span>
+                        <span class="arrow">➜</span>
+                        <span>LEVERKUSEN</span>
+                        <span class="arrow">➜</span>
+                        <span>BOCHUM</span>
+                    </div>
+                    <div class="details">
+                        <p>
+                            Überraschung! Wir machen einen kleinen Weihnachts-Roadtrip. Es geht nach Hause, in die <strong>Heimat!</strong>
+                        </p>
+                        <p>
+                            Aber das ist noch nicht alles: Wir fahren weiter nach Bochum zum <strong>Starlight Express!</strong> 🌟
+                        </p>
+                        <p>
+                            Den genauen Tag überlasse ich dir – such dir einfach einen Termin aus, der dir am besten passt.
+                        </p>
+                    </div>
+                </div>
+                <div class="ticket-footer">
+                    GUTSCHEIN FÜR 2 PERSONEN
+                </div>
+            </div>
+            <p class="love-note" id="loveNote">Ich hab dich lieb ❤️</p>
+        </div>
+    </div>
+
+    <script>
+        // Sterne generieren
+        const starContainer = document.getElementById('starContainer');
+        for(let i=0; i<100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.animationDuration = (Math.random() * 2 + 1) + 's';
+            starContainer.appendChild(star);
+        }
+
+        // Schnee generieren
+        const snowContainer = document.getElementById('snowContainer');
+        for(let i=0; i<50; i++) {
+            const flake = document.createElement('div');
+            flake.className = 'snowflake';
+            flake.style.left = Math.random() * 100 + '%';
+            flake.style.width = Math.random() * 5 + 2 + 'px';
+            flake.style.height = flake.style.width;
+            flake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            flake.style.animationDelay = Math.random() * 5 + 's';
+            snowContainer.appendChild(flake);
+        }
+
+        // Interaktion
+        const openBtn = document.getElementById('openBtn');
+        const ticketWrapper = document.getElementById('ticketWrapper');
+        const mainTitle = document.getElementById('mainTitle');
+        const loveNote = document.getElementById('loveNote');
+
+        openBtn.addEventListener('click', () => {
+            // Button ausblenden
+            openBtn.style.display = 'none';
+            mainTitle.style.display = 'none';
+            
+            // Ticket Wrapper anzeigen und Animation starten
+            ticketWrapper.style.display = 'flex';
+            
+            setTimeout(() => {
+                ticketWrapper.classList.add('zoomInAnim');
+            }, 10);
+
+            // Love Note verzögert einblenden
+            loveNote.style.animation = "fadeIn 2s 1s forwards";
+
+            // Hintergrund beschleunigen (Warp Effekt)
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => {
+                star.style.transition = "animation-duration 2s ease";
+                star.style.animationDuration = '0.2s'; 
+            });
+        });
+    </script>
+</body>
+</html>
